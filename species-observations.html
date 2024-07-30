@@ -6,12 +6,17 @@
     <title>Wildlife Observations by Species</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
         body {
             font-family: 'Poppins', sans-serif;
         }
         .chart-container {
             width: 80%;
             margin: auto;
+        }
+        .smaller {
+            font-size: 10px;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -84,33 +89,75 @@
             }]
         };
 
+        // Custom tick callback function
+        function customTickCallback(value, index, values) {
+            if (value % 100 === 50) {
+                return '   ' + value; // Adding spaces to make it smaller
+            }
+            return value;
+        }
+
+        // Custom tick style function
+        function customTickStyle(ctx, value) {
+            if (value % 100 === 50) {
+                return {
+                    size: 12,
+                    family: 'Poppins',
+                    weight: 'normal',
+                    color: 'black'
+                };
+            }
+            return {
+                size: 14,
+                family: 'Poppins',
+                weight: 'bold',
+                color: 'black'
+            };
+        }
+
         // Configurations for the chart
         const config = {
             type: 'bar',
             data: data,
             options: {
-    indexAxis: 'y',
-    scales: {
-        x: {
-            beginAtZero: true,
-            ticks: {
-                stepSize: 50,
-                font: {
-                    family: 'Poppins',
-                    weight: 'bold'
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 50,
+                            callback: customTickCallback,
+                            font: {
+                                family: 'Poppins',
+                                weight: 'bold'
+                            }
+                        },
+                        afterBuildTicks: function(chart) {
+                            chart.ticks.forEach(tick => {
+                                tick.major = customTickStyle(chart, tick.value).weight === 'bold';
+                            });
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                family: 'Poppins',
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                family: 'Poppins',
+                                weight: 'bold'
+                            }
+                        }
+                    }
                 }
             }
-        },
-        y: {
-            ticks: {
-                font: {
-                    family: 'Poppins',
-                    weight: 'bold'
-                }
-            }
-        }
-    }
-}
         };
 
         // Render the chart
