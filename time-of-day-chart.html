@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
-        #chartContainer { width: 100%; height: 100vh; position: relative; }
+        #chartContainer { width: 100%; height: 100vh; position: relative; padding: 20px; box-sizing: border-box; }
         #chartTitle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-size: 20px; font-weight: bold; }
     </style>
 </head>
@@ -24,12 +24,12 @@
             type: 'doughnut',
             data: {
                 labels: [
-                    'Midnight to Early Morning 00:00-03:59',
-                    'Early Morning 04:00-07:59',
-                    'Morning to Noon 08:00-11:59',
-                    'Afternoon 12:00-15:59',
-                    'Evening 16:00-19:59',
-                    'Night to Midnight 20:00-23:59'
+                    'Midnight to Early Morning',
+                    'Early Morning',
+                    'Morning to Noon',
+                    'Afternoon',
+                    'Evening',
+                    'Night to Midnight'
                 ],
                 datasets: [{
                     data: [329, 179, 153, 168, 111, 263],
@@ -63,7 +63,12 @@
                     }
                 },
                 layout: {
-                    padding: 40
+                    padding: {
+                        top: 50,
+                        bottom: 50,
+                        left: 50,
+                        right: 50
+                    }
                 }
             },
             plugins: [{
@@ -78,8 +83,8 @@
                                 var endAngle = element.endAngle;
                                 var middleAngle = startAngle + (endAngle - startAngle) / 2;
 
-                                var posX = element.x + (Math.cos(middleAngle) * (element.outerRadius + 40));
-                                var posY = element.y + (Math.sin(middleAngle) * (element.outerRadius + 40));
+                                var posX = element.x + (Math.cos(middleAngle) * (element.outerRadius + 60));
+                                var posY = element.y + (Math.sin(middleAngle) * (element.outerRadius + 60));
 
                                 ctx.fillStyle = '#000';
                                 ctx.font = 'bold 14px Poppins';
@@ -88,12 +93,10 @@
                                 
                                 const total = dataset.data.reduce((a, b) => a + b, 0);
                                 const percentage = Math.round((data / total) * 100);
-                                const label = chart.data.labels[index].split(' ');
-                                const timeRange = label.pop();
-                                const mainLabel = label.join(' ');
-                                ctx.fillText(`${mainLabel}`, posX, posY - 10);
+                                const timeRanges = ['00:00-03:59', '04:00-07:59', '08:00-11:59', '12:00-15:59', '16:00-19:59', '20:00-23:59'];
+                                ctx.fillText(`${chart.data.labels[index]}`, posX, posY - 10);
                                 ctx.font = '12px Poppins';
-                                ctx.fillText(`${timeRange}: ${data} (${percentage}%)`, posX, posY + 10);
+                                ctx.fillText(`${timeRanges[index]}: ${data} (${percentage}%)`, posX, posY + 10);
                             });
                         }
                     });
