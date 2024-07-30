@@ -17,10 +17,6 @@
         .chart-container canvas {
             height: calc(24 * 30px); /* 24 species * 30px height per species */
         }
-        .small-tick {
-            font-size: 10px !important;
-            font-weight: normal !important;
-        }
     </style>
 </head>
 <body>
@@ -67,12 +63,6 @@
                         beginAtZero: true,
                         ticks: {
                             stepSize: 50,
-                            callback: function(value, index, values) {
-                                if (value % 100 === 50) {
-                                    return '   ' + value;
-                                }
-                                return value;
-                            },
                             font: {
                                 family: 'Poppins',
                                 size: 14,
@@ -101,24 +91,7 @@
                         }
                     }
                 }
-            },
-            plugins: [{
-                afterDraw: function(chart) {
-                    var ctx = chart.ctx;
-                    chart.scales.x.ticks.forEach((tick, index) => {
-                        if (tick.value % 100 === 50) {
-                            var xLine = chart.scales.x.getPixelForTick(index);
-                            var yAxis = chart.scales.y.top;
-                            ctx.save();
-                            ctx.font = '10px Poppins';
-                            ctx.fillStyle = '#666';
-                            ctx.textBaseline = 'bottom';
-                            ctx.fillText(tick.value, xLine, yAxis - 5);
-                            ctx.restore();
-                        }
-                    });
-                }
-            }]
+            }
         };
 
         // Render the chart
