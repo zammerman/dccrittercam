@@ -33,56 +33,18 @@
                 label: 'Count',
                 data: [672, 137, 109, 103, 38, 24, 31, 27, 8, 4, 4, 6, 10, 6, 6, 3, 5, 2, 2, 2, 1, 1, 1, 1],
                 backgroundColor: [
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A'
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A'
                 ],
                 borderColor: [
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A',
-                    '#F4A79F',
-                    '#2C90B8',
-                    '#F15E50',
-                    '#5EAAAA',
-                    '#1F526A'
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
+                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A'
                 ],
                 borderWidth: 1
             }]
@@ -91,9 +53,21 @@
         // Custom tick callback function
         function customTickCallback(value, index, values) {
             if (value % 100 === 50) {
-                return '   ' + value; // Adding spaces to make it smaller
+                return {
+                    value: '   ' + value,
+                    font: {
+                        size: 10,
+                        weight: 'normal'
+                    }
+                };
             }
-            return value;
+            return {
+                value: value,
+                font: {
+                    size: 14,
+                    weight: 'bold'
+                }
+            };
         }
 
         // Configurations for the chart
@@ -111,8 +85,7 @@
                             stepSize: 50,
                             callback: customTickCallback,
                             font: {
-                                family: 'Poppins',
-                                weight: 'bold'
+                                family: 'Poppins'
                             }
                         }
                     },
@@ -120,6 +93,7 @@
                         ticks: {
                             font: {
                                 family: 'Poppins',
+                                size: 14,
                                 weight: 'bold'
                             }
                         }
@@ -130,6 +104,7 @@
                         labels: {
                             font: {
                                 family: 'Poppins',
+                                size: 14,
                                 weight: 'bold'
                             }
                         }
