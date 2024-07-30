@@ -89,16 +89,28 @@
             type: 'bar',
             data: data,
             options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true
-                        ticks: {
-                            stepSize: 50  // Add this line to set the grid to show every 50 units
-                        }
-                    }
+    indexAxis: 'y',
+    scales: {
+        x: {
+            beginAtZero: true,
+            ticks: {
+                stepSize: 50,
+                font: {
+                    family: 'Poppins',
+                    weight: 'bold'
                 }
             }
+        },
+        y: {
+            ticks: {
+                font: {
+                    family: 'Poppins',
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+}
         };
 
         // Render the chart
