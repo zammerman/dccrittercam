@@ -50,26 +50,6 @@
             }]
         };
 
-        // Custom tick callback function
-        function customTickCallback(value, index, values) {
-            if (value % 100 === 50) {
-                return {
-                    value: '   ' + value,
-                    font: {
-                        size: 10,
-                        weight: 'normal'
-                    }
-                };
-            }
-            return {
-                value: value,
-                font: {
-                    size: 14,
-                    weight: 'bold'
-                }
-            };
-        }
-
         // Configurations for the chart
         const config = {
             type: 'bar',
@@ -83,7 +63,24 @@
                         beginAtZero: true,
                         ticks: {
                             stepSize: 50,
-                            callback: customTickCallback,
+                            callback: function(value, index, values) {
+                                if (value % 100 === 50) {
+                                    return {
+                                        label: '   ' + value,
+                                        font: {
+                                            size: 10,
+                                            weight: 'normal'
+                                        }
+                                    };
+                                }
+                                return {
+                                    label: value,
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                };
+                            },
                             font: {
                                 family: 'Poppins'
                             }
