@@ -8,13 +8,34 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; background-color: white; }
-        #chartContainer { width: 100%; max-width: 1200px; height: 800px; margin: 0 auto; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: white; 
+        }
+        .chart-container { 
+            width: 100%; 
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        #chartContainer { 
+            width: 1200px; 
+            height: 600px; 
+            margin: 0 auto; 
+        }
+        @media (max-width: 600px) {
+            #chartContainer {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="chartContainer">
-        <canvas id="myChart"></canvas>
+    <div class="chart-container">
+        <div id="chartContainer">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
 
     <script>
@@ -34,8 +55,8 @@
                     type: 'line',
                     pointRadius: 5,
                     pointHoverRadius: 8,
-                    pointBorderWidth: 3,  // Increased point border width
-                    tension: 0.4, // smoothed lines
+                    pointBorderWidth: 3,
+                    tension: 0.4,
                 },
                 {
                     label: 'Occurrences',
@@ -46,8 +67,8 @@
                     type: 'line',
                     pointRadius: 5,
                     pointHoverRadius: 8,
-                    pointBorderWidth: 3,  // Increased point border width
-                    tension: 0.4, // smoothed lines
+                    pointBorderWidth: 3,
+                    tension: 0.4,
                 },
                 {
                     label: 'Max Temp',
@@ -59,8 +80,8 @@
                     borderDash: [4, 4],
                     pointRadius: 5,
                     pointHoverRadius: 8,
-                    pointBorderWidth: 3,  // Increased point border width
-                    tension: 0.4, // smoothed lines
+                    pointBorderWidth: 3,
+                    tension: 0.4,
                 },
                 {
                     label: 'Precipitation',
@@ -88,11 +109,11 @@
                         display: true,
                         text: 'Wildlife Observation Timeline',
                         font: {
-                            size: 32,
+                            size: 24,
                             weight: 'bold',
                             family: 'Poppins'
                          },
-                        color: 'black'  // This line sets the title color to black
+                        color: 'black'
                     },
                     legend: {
                         position: 'top',
