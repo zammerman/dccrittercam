@@ -11,12 +11,11 @@
             font-family: 'Poppins', sans-serif;
         }
         .chart-container {
-            width: 100%;
+            width: 95%;
             margin: auto;
         }
-        .smaller {
-            font-size: 10px;
-            font-weight: normal;
+        .chart-container canvas {
+            height: calc(24 * 30px); /* 24 species * 30px height per species */
         }
     </style>
 </head>
@@ -97,29 +96,13 @@
             return value;
         }
 
-        // Custom tick style function
-        function customTickStyle(ctx, value) {
-            if (value % 100 === 50) {
-                return {
-                    size: 12,
-                    family: 'Poppins',
-                    weight: 'normal',
-                    color: 'black'
-                };
-            }
-            return {
-                size: 14,
-                family: 'Poppins',
-                weight: 'bold',
-                color: 'black'
-            };
-        }
-
         // Configurations for the chart
         const config = {
             type: 'bar',
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 indexAxis: 'y',
                 scales: {
                     x: {
@@ -131,11 +114,6 @@
                                 family: 'Poppins',
                                 weight: 'bold'
                             }
-                        },
-                        afterBuildTicks: function(chart) {
-                            chart.ticks.forEach(tick => {
-                                tick.major = customTickStyle(chart, tick.value).weight === 'bold';
-                            });
                         }
                     },
                     y: {
