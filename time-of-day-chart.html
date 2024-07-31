@@ -23,6 +23,16 @@
         const ctx = document.getElementById('myChart').getContext('2d');
         let chart;
 
+        function drawTextWithOutline(ctx, text, x, y, fontSize, fontWeight = '') {
+            ctx.strokeStyle = 'rgba(128, 128, 128, 0.8)';
+            ctx.lineWidth = fontSize / 5;
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
+            ctx.font = `${fontWeight} ${fontSize}px Poppins`;
+            ctx.strokeText(text, x, y);
+            ctx.fillText(text, x, y);
+        }
+
         function createChart() {
             if (chart) {
                 chart.destroy();
@@ -94,17 +104,15 @@
                                     const percentage = Math.round((data / total) * 100);
                                     
                                     var fontSize = Math.min(radius / 12, 12);
-                                    ctx.font = `bold ${fontSize}px Poppins`;
                                     
                                     let label = chart.data.labels[index];
                                     if (radius < 100) {
                                         label = label.split(' ')[0];
                                     }
-                                    ctx.fillText(label, posX, posY - fontSize * 1.2);
+                                    drawTextWithOutline(ctx, label, posX, posY - fontSize * 1.2, fontSize, 'bold');
                                     
-                                    ctx.font = `${fontSize - 1}px Poppins`;
-                                    ctx.fillText(timeRanges[index], posX, posY);
-                                    ctx.fillText(`${data} (${percentage}%)`, posX, posY + fontSize * 1.2);
+                                    drawTextWithOutline(ctx, timeRanges[index], posX, posY, fontSize - 1);
+                                    drawTextWithOutline(ctx, `${data} (${percentage}%)`, posX, posY + fontSize * 1.2, fontSize - 1);
                                 });
                             }
                         });
