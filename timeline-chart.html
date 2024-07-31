@@ -20,7 +20,7 @@
             -webkit-overflow-scrolling: touch;
         }
         #chartContainer { 
-            width: 1000px; 
+            width: 100%; 
             height: 600px; 
             margin: 0 auto; 
         }
@@ -53,9 +53,9 @@
                     backgroundColor: '#FFFFFF',
                     yAxisID: 'y',
                     type: 'line',
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointBorderWidth: 3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBorderWidth: 2,
                     tension: 0.4,
                 },
                 {
@@ -65,9 +65,9 @@
                     backgroundColor: '#FFFFFF',
                     yAxisID: 'y',
                     type: 'line',
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointBorderWidth: 3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBorderWidth: 2,
                     tension: 0.4,
                 },
                 {
@@ -78,9 +78,9 @@
                     yAxisID: 'y',
                     type: 'line',
                     borderDash: [4, 4],
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointBorderWidth: 3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBorderWidth: 2,
                     tension: 0.4,
                 },
                 {
@@ -109,17 +109,27 @@
                         display: true,
                         text: 'Wildlife Observation Timeline',
                         font: {
-                            size: 24,
+                            size: 18,
                             weight: 'bold',
                             family: 'Poppins'
-                         },
+                        },
                         color: 'black'
                     },
                     legend: {
                         position: 'top',
+                        labels: {
+                            font: {
+                                size: 12
+                            }
+                        }
                     },
                     tooltip: {
-                        mode: 'index'
+                        mode: 'index',
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw}`;
+                            }
+                        }
                     }
                 },
                 scales: {
@@ -146,6 +156,11 @@
                         },
                         min: 0,
                         max: 120,
+                        ticks: {
+                            callback: function(value) {
+                                return value % 10 === 0 ? value : '';
+                            }
+                        }
                     },
                     y1: {
                         type: 'linear',
@@ -160,6 +175,11 @@
                         grid: {
                             drawOnChartArea: false,
                         },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(2);
+                            }
+                        }
                     },
                 }
             },
