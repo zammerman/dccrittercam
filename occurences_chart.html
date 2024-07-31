@@ -22,6 +22,16 @@
         const ctx = document.getElementById('myChart').getContext('2d');
         let chart;
 
+        function drawTextWithOutline(ctx, text, x, y, fontSize, fontWeight = '') {
+            ctx.strokeStyle = '#Y808080'; // Replace with your desired outline color
+            ctx.lineWidth = fontSize / 4; // Adjust this value to change outline thickness
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
+            ctx.font = `${fontWeight} ${fontSize}px Poppins`;
+            ctx.strokeText(text, x, y);
+            ctx.fillText(text, x, y);
+        }
+
         function createChart() {
             if (chart) {
                 chart.destroy();
@@ -69,7 +79,6 @@
                                     var endAngle = element.endAngle;
                                     var middleAngle = startAngle + (endAngle - startAngle) / 2;
 
-                                    // Position labels inside the doughnut
                                     var posX = centerX + Math.cos(middleAngle) * (radius * 0.7);
                                     var posY = centerY + Math.sin(middleAngle) * (radius * 0.7);
 
@@ -81,13 +90,10 @@
                                     const total = dataset.data.reduce((a, b) => a + b, 0);
                                     const percentage = Math.round((data / total) * 100);
                                     
-                                    // Adjust font size based on available space
                                     var fontSize = Math.min(radius / 10, 14);
-                                    ctx.font = `bold ${fontSize}px Poppins`;
-                                    ctx.fillText(chart.data.labels[index], posX, posY - fontSize);
                                     
-                                    ctx.font = `${fontSize - 2}px Poppins`;
-                                    ctx.fillText(`${data} (${percentage}%)`, posX, posY + fontSize);
+                                    drawTextWithOutline(ctx, chart.data.labels[index], posX, posY - fontSize, fontSize, 'bold');
+                                    drawTextWithOutline(ctx, `${data} (${percentage}%)`, posX, posY + fontSize, fontSize - 2);
                                 });
                             }
                         });
