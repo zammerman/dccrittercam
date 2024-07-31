@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wildlife Observations by Species</title>
+    <title>Wildlife Observations by Camera and Bioacoustic Detection</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
@@ -15,41 +15,45 @@
             margin: auto;
         }
         .chart-container canvas {
-            height: calc(24 * 30px); /* 24 species * 30px height per species */
+            height: calc(37 * 30px); /* 37 species * 30px height per species */
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Wildlife Observations by Species (Camera Traps)</h1>
+    <h1 style="text-align: center;">Wildlife Observations by Camera and Bioacoustic Detection</h1>
     <div class="chart-container">
         <canvas id="speciesChart"></canvas>
     </div>
-
     <script>
-        // Data from the provided table
+        // Data from the combined table
         const data = {
-            labels: ["Raccoon", "Gray Catbird", "Eastern Gray Squirrel", "American Robin", "American Crow", "Red fox", "White-tailed deer", "Tufted Titmouse", "Red-Bellied Woodpecker", "Eastern Towhee", "Black-Capped Chickadee", "Northern Cardinal", "Domestic cat", "Domestic dog", "Blue Jay", "Northern Flicker", "Unidentified Bird", "Brown Thrasher", "White-Breasted Nuthatch", "Carolina Wren", "Great Crested Flycatcher", "Eastern Chipmunk", "Northern Mockingbird", "Virginia Opossum"],
+            labels: ["Raccoon", "Carolina Wren", "Fish Crow", "Gray Catbird", "American Goldfinch", "Eastern Gray Squirrel", "American Crow", "American Robin", "Northern Cardinal", "White-Breasted Nuthatch", "White-tailed deer", "Blue Jay", "Black-Capped Chickadee", "Tufted Titmouse", "Red fox", "Red-Shouldered Hawk", "Red-Bellied Woodpecker", "Domestic cat", "Cedar Waxwing", "Chimney Swift", "Eastern Wood-Pewee", "Chipping Sparrow", "Eastern Towhee", "Domestic dog", "Mourning Dove", "Northern Flicker", "Indigo Bunting", "Carolina Chickadee", "Downy Woodpecker", "Eastern Kingbird", "Brown Thrasher", "Blue-Gray Gnatcatcher", "Canada Goose", "Cooper's Hawk", "Great Crested Flycatcher", "Killdeer", "Yellow-Billed Cuckoo", "Virginia Opossum", "Northern Mockingbird", "Eastern Chipmunk"],
             datasets: [{
                 label: 'Count',
-                data: [672, 137, 109, 103, 38, 24, 31, 27, 8, 4, 4, 6, 10, 6, 6, 3, 5, 2, 2, 2, 1, 1, 1, 1],
+                data: [682, 365, 343, 345, 181, 110, 104, 107, 52, 47, 33, 41, 37, 46, 24, 22, 29, 10, 9, 7, 7, 6, 10, 6, 4, 7, 3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1],
                 backgroundColor: [
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A'
+                    '#2C90B8', '#1F526A', '#5EAAAA', '#1F526A', '#5EAAAA',
+                    '#2C90B8', '#1F526A', '#1F526A', '#1F526A', '#1F526A',
+                    '#2C90B8', '#1F526A', '#1F526A', '#1F526A', '#2C90B8',
+                    '#5EAAAA', '#1F526A', '#2C90B8', '#5EAAAA', '#5EAAAA',
+                    '#5EAAAA', '#5EAAAA', '#1F526A', '#2C90B8', '#5EAAAA',
+                    '#1F526A', '#5EAAAA', '#5EAAAA', '#5EAAAA', '#5EAAAA',
+                    '#2C90B8', '#5EAAAA', '#5EAAAA', '#5EAAAA', '#1F526A',
+                    '#5EAAAA', '#5EAAAA', '#2C90B8', '#2C90B8', '#2C90B8'
                 ],
                 borderColor: [
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A', '#F4A79F',
-                    '#2C90B8', '#F15E50', '#5EAAAA', '#1F526A'
+                    '#2C90B8', '#1F526A', '#5EAAAA', '#1F526A', '#5EAAAA',
+                    '#2C90B8', '#1F526A', '#1F526A', '#1F526A', '#1F526A',
+                    '#2C90B8', '#1F526A', '#1F526A', '#1F526A', '#2C90B8',
+                    '#5EAAAA', '#1F526A', '#2C90B8', '#5EAAAA', '#5EAAAA',
+                    '#5EAAAA', '#5EAAAA', '#1F526A', '#2C90B8', '#5EAAAA',
+                    '#1F526A', '#5EAAAA', '#5EAAAA', '#5EAAAA', '#5EAAAA',
+                    '#2C90B8', '#5EAAAA', '#5EAAAA', '#5EAAAA', '#1F526A',
+                    '#5EAAAA', '#5EAAAA', '#2C90B8', '#2C90B8', '#2C90B8'
                 ],
                 borderWidth: 1
             }]
         };
-
         // Configurations for the chart
         const config = {
             type: 'bar',
@@ -82,12 +86,30 @@
                 },
                 plugins: {
                     legend: {
-                        display: false
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            generateLabels: function(chart) {
+                                return [
+                                    {
+                                        text: 'Camera Observation Only',
+                                        fillStyle: '#2C90B8'
+                                    },
+                                    {
+                                        text: 'Bioacoustic Detection Only',
+                                        fillStyle: '#5EAAAA'
+                                    },
+                                    {
+                                        text: 'Both',
+                                        fillStyle: '#1F526A'
+                                    }
+                                ];
+                            }
+                        }
                     }
                 }
             }
         };
-
         // Render the chart
         const speciesChart = new Chart(
             document.getElementById('speciesChart'),
