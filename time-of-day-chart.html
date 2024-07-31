@@ -21,105 +21,108 @@
 
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    'Midnight to Early Morning',
-                    'Early Morning',
-                    'Morning to Noon',
-                    'Afternoon',
-                    'Evening',
-                    'Night to Midnight'
-                ],
-                datasets: [{
-                    data: [329, 179, 153, 168, 111, 263],
-                    backgroundColor: [
-                        '#0a3c5e', '#185a7d', '#3887ab',
-                        '#75b1c5', '#5291ab', '#0e4d6f'
+        let chart;
+
+        function createChart() {
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Midnight to Early Morning',
+                        'Early Morning',
+                        'Morning to Noon',
+                        'Afternoon',
+                        'Evening',
+                        'Night to Midnight'
                     ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.parsed;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return `${value} (${percentage}%)`;
-                            }
+                    datasets: [{
+                        data: [329, 179, 153, 168, 111, 263],
+                        backgroundColor: [
+                            '#0a3c5e', '#185a7d', '#3887ab',
+                            '#75b1c5', '#5291ab', '#0e4d6f'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            enabled: false
                         }
+                    },
+                    layout: {
+                        padding: 20
                     }
                 },
-                layout: {
-                    padding: {
-                        top: 20,
-                        bottom: 20,
-                        left: 20,
-                        right: 20
+                plugins: [{
+                    afterDraw: function(chart) {
+                        var ctx = chart.ctx;
+                        ctx.save();
+                        var chartArea = chart.chartArea;
+                        var centerX = (chartArea.left + chartArea.right) / 2;
+                        var centerY = (chartArea.top + chartArea.bottom) / 2;
+                        var radius = Math.min(chartArea.right - chartArea.left, chartArea.bottom - chartArea.top) / 2;
+
+                        const timeRanges = ['00:00-03:59', '04:00-07:59', '08:00-11:59', '12:00-15:59', '16:00-19:59', '20:00-23:59'];
+
+                        chart.data.datasets.forEach(function(dataset, i) {
+                            var meta = chart.getDatasetMeta(i);
+                            if (!meta.hidden) {
+                                meta.data.forEach(function(element, index) {
+                                    var startAngle = element.startAngle;
+                                    var endAngle = element.endAngle;
+                                    var middleAngle = startAngle + (endAngle - startAngle) / 2;
+
+                                    var posX = centerX + Math.cos(middleAngle) * (radius * 0.7);
+                                    var posY = centerY + Math.sin(middleAngle) * (radius * 0.7);
+
+                                    ctx.fillStyle = '#fff';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    
+                                    const data = dataset.data[index];
+                                    const total = dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((data / total) * 100);
+                                    
+                                    var fontSize = Math.min(radius / 12, 12);
+                                    ctx.font = `bold ${fontSize}px Poppins`;
+                                    
+                                    let label = chart.data.labels[index];
+                                    if (radius < 100) {
+                                        label = label.split(' ')[0];
+                                    }
+                                    ctx.fillText(label, posX, posY - fontSize * 1.2);
+                                    
+                                    ctx.font = `${fontSize - 1}px Poppins`;
+                                    ctx.fillText(timeRanges[index], posX, posY);
+                                    ctx.fillText(`${data} (${percentage}%)`, posX, posY + fontSize * 1.2);
+                                });
+                            }
+                        });
+                        ctx.restore();
                     }
-                }
-            },
-            plugins: [{
-                afterDraw: function(chart) {
-                    var ctx = chart.ctx;
-                    ctx.save();
-                    var chartArea = chart.chartArea;
-                    var centerX = (chartArea.left + chartArea.right) / 2;
-                    var centerY = (chartArea.top + chartArea.bottom) / 2;
-                    var radius = Math.min(chartArea.right - chartArea.left, chartArea.bottom - chartArea.top) / 2;
+                }]
+            });
+        }
 
-                    chart.data.datasets.forEach(function(dataset, i) {
-                        var meta = chart.getDatasetMeta(i);
-                        if (!meta.hidden) {
-                            meta.data.forEach(function(element, index) {
-                                var startAngle = element.startAngle;
-                                var endAngle = element.endAngle;
-                                var middleAngle = startAngle + (endAngle - startAngle) / 2;
-
-                                var posX = centerX + Math.cos(middleAngle) * (radius * 1.2);
-                                var posY = centerY + Math.sin(middleAngle) * (radius * 1.2);
-
-                                ctx.fillStyle = '#000';
-                                ctx.font = 'bold 12px Poppins';
-                                ctx.textAlign = (posX > centerX) ? 'left' : 'right';
-                                ctx.textBaseline = 'middle';
-                                
-                                const data = dataset.data[index];
-                                const total = dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((data / total) * 100);
-                                const timeRanges = ['00:00-03:59', '04:00-07:59', '08:00-11:59', '12:00-15:59', '16:00-19:59', '20:00-23:59'];
-                                
-                                let label = chart.data.labels[index];
-                                if (window.innerWidth < 600) {
-                                    label = label.split(' ')[0];
-                                }
-                                ctx.fillText(label, posX, posY - 8);
-                                ctx.font = '10px Poppins';
-                                ctx.fillText(`${timeRanges[index]}: ${data} (${percentage}%)`, posX, posY + 8);
-                            });
-                        }
-                    });
-                    ctx.restore();
-                }
-            }]
-        });
-
-        function resizeChart() {
+        function handleResize() {
+            createChart();
             const container = document.getElementById('chartContainer');
             const canvas = document.getElementById('myChart');
             canvas.style.height = `${container.offsetHeight - 40}px`;
-            chart.resize();
         }
 
-        window.addEventListener('resize', resizeChart);
-        resizeChart();
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call to set up the chart
     </script>
 </body>
 </html>
